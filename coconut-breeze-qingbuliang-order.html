@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#067f95">
+  <title>椰风清补凉 - 在线点餐</title>
+  <style>
+    :root {
+      --sea: #087f95;
+      --sea-dark: #075c70;
+      --aqua: #d7f6ed;
+      --mint: #a8e3ce;
+      --palm: #23735d;
+      --sun: #ffd553;
+      --coral: #fa8d61;
+      --cream: #fffdf4;
+      --ink: #0b4554;
+      --line: #b8ded5;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      background-color: var(--aqua);
+      background-image: linear-gradient(180deg, #bdece2 0 185px, var(--aqua) 185px);
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .site-header {
+      width: min(1120px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 25px 0 23px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--sea-dark);
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      overflow: hidden;
+      border: 3px solid var(--sea-dark);
+      border-radius: 50%;
+      background: var(--sun);
+    }
+
+    .brand-mark::before, .brand-mark::after {
+      position: absolute;
+      background: var(--palm);
+      content: "";
+    }
+
+    .brand-mark::before {
+      width: 33px;
+      height: 7px;
+      right: -2px;
+      bottom: 9px;
+      border-radius: 99px;
+      transform: rotate(-29deg);
+    }
+
+    .brand-mark::after {
+      width: 6px;
+      height: 31px;
+      right: 14px;
+      bottom: 2px;
+      border-radius: 99px;
+      transform: rotate(-29deg);
+    }
+
+    .brand-copy { line-height: 1.05; }
+    .brand-copy strong { display: block; font-size: 21px; letter-spacing: .06em; }
+    .brand-copy span { display: block; margin-top: 5px; font-size: 11px; letter-spacing: .12em; }
+
+    .header-note {
+      display: inline-flex;
+      align-items: center;
+      min-height: 35px;
+      padding: 0 12px;
+      border: 1px solid rgba(7, 92, 112, .17);
+      border-radius: 999px;
+      background: rgba(255, 253, 244, .62);
+      color: var(--sea-dark);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 12px 0 44px;
+    }
+
+    .intro-band {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 22px;
+    }
+
+    .intro-band h1 {
+      max-width: 600px;
+      margin: 0;
+      color: var(--sea-dark);
+      font-size: clamp(29px, 4.1vw, 45px);
+      line-height: 1.18;
+      letter-spacing: .04em;
+    }
+
+    .intro-band p {
+      margin: 12px 0 0;
+      color: #176270;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .food-photo {
+      position: relative;
+      height: 142px;
+      overflow: hidden;
+      margin: 0;
+      border: 4px solid rgba(255, 253, 244, .86);
+      border-radius: 13px;
+      background: var(--sea);
+      box-shadow: 0 11px 19px rgba(7, 80, 91, .18);
+    }
+
+    .food-photo img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 54%; }
+    .food-photo figcaption { position: absolute; right: 8px; bottom: 6px; margin: 0; color: rgba(255,255,255,.94); font-size: 10px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,.48); }
+    .food-photo a { color: inherit; }
+
+    .order-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.58fr) minmax(290px, .74fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .order-builder, .order-summary {
+      border: 1px solid rgba(7, 92, 112, .16);
+      border-radius: 8px;
+      background: var(--cream);
+      box-shadow: 0 12px 25px rgba(4, 90, 102, .12);
+    }
+
+    .order-builder { padding: 28px; }
+    .order-summary { position: sticky; top: 18px; overflow: hidden; }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 19px;
+    }
+
+    .section-heading h2 { margin: 0; color: var(--sea-dark); font-size: 21px; letter-spacing: .03em; }
+    .section-heading span { color: #51878a; font-size: 12px; font-weight: 700; }
+
+    .package-list { display: grid; gap: 11px; }
+
+    .package {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 13px;
+      min-height: 94px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fcfff9;
+    }
+
+    .package-icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #daf4e4;
+      color: var(--palm);
+      font-size: 24px;
+    }
+
+    .package h3 { margin: 0; color: var(--sea-dark); font-size: 16px; }
+    .package p { margin: 5px 0 0; color: #568083; font-size: 12px; font-weight: 600; line-height: 1.45; }
+    .package-price { margin-top: 5px; color: var(--coral); font-size: 14px; font-weight: 900; }
+
+    .stepper {
+      display: grid;
+      grid-template-columns: 34px 35px 34px;
+      align-items: center;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .stepper button {
+      height: 100%;
+      border: 0;
+      background: #effaf4;
+      color: var(--palm);
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .stepper button:hover { background: var(--mint); }
+    .stepper output { display: grid; place-items: center; height: 100%; color: var(--sea-dark); font-size: 14px; font-weight: 900; }
+
+    .customize { margin-top: 27px; padding-top: 25px; border-top: 1px dashed var(--line); }
+    .customize h2 { margin: 0; color: var(--sea-dark); font-size: 20px; }
+    .customize > p { margin: 7px 0 14px; color: #568083; font-size: 13px; font-weight: 600; }
+    .addon-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+
+    .addon {
+      min-height: 47px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 7px;
+      padding: 7px 8px 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #f9fff9;
+    }
+
+    .addon span { color: var(--sea-dark); font-size: 13px; font-weight: 800; }
+    .addon b { color: var(--coral); font-size: 12px; }
+    .addon .stepper { transform: scale(.82); transform-origin: right center; margin-right: -6px; }
+    .addon.is-disabled { opacity: .48; }
+
+    .flavor { margin-top: 23px; }
+    .flavor h2 { margin: 0 0 12px; color: var(--sea-dark); font-size: 20px; }
+    .segmented { display: grid; grid-template-columns: repeat(3, 1fr); overflow: hidden; border: 1px solid var(--line); border-radius: 7px; }
+    .segmented label { position: relative; display: grid; place-items: center; min-height: 39px; border-right: 1px solid var(--line); background: #fafffa; color: #4c7d80; font-size: 13px; font-weight: 800; }
+    .segmented label:last-child { border-right: 0; }
+    .segmented input { position: absolute; opacity: 0; }
+    .segmented input:checked + span { display: grid; place-items: center; align-self: stretch; width: 100%; color: var(--sea-dark); background: var(--sun); }
+
+    .summary-top { padding: 23px 23px 18px; background: var(--sea); color: white; }
+    .summary-top p { margin: 0; color: #cbfff1; font-size: 12px; font-weight: 700; letter-spacing: .09em; }
+    .summary-top h2 { margin: 8px 0 0; font-size: 23px; letter-spacing: .04em; }
+    .summary-content { padding: 20px 23px 22px; }
+    .summary-items { min-height: 110px; display: grid; align-content: start; gap: 10px; margin-bottom: 16px; }
+    .empty-state { padding: 13px 0; color: #769a99; font-size: 14px; font-weight: 700; text-align: center; }
+    .summary-item { display: flex; justify-content: space-between; gap: 12px; color: var(--sea-dark); font-size: 14px; font-weight: 800; }
+    .summary-item span:last-child { white-space: nowrap; }
+    .bill { display: grid; gap: 10px; padding-top: 16px; border-top: 1px dashed var(--line); }
+    .bill-row { display: flex; align-items: center; justify-content: space-between; color: #578284; font-size: 14px; font-weight: 700; }
+    .bill-row strong { color: var(--sea-dark); }
+    .total { margin-top: 2px; padding-top: 13px; border-top: 1px solid var(--line); color: var(--sea-dark); font-size: 15px; font-weight: 900; }
+    .total output { color: var(--coral); font-size: 29px; letter-spacing: 0; }
+    .place-order {
+      width: 100%;
+      min-height: 47px;
+      margin-top: 19px;
+      border: 0;
+      border-radius: 7px;
+      background: var(--coral);
+      color: white;
+      font-size: 16px;
+      font-weight: 900;
+      box-shadow: 0 5px 0 #ce6d4c;
+    }
+    .place-order:hover { background: #ec7854; }
+    .place-order:active { transform: translateY(3px); box-shadow: 0 2px 0 #ce6d4c; }
+    .place-order:disabled { cursor: not-allowed; background: #bbc9c4; box-shadow: 0 5px 0 #96a9a2; }
+    .clear-order { width: 100%; margin-top: 13px; border: 0; background: transparent; color: #5f8889; font-size: 13px; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+    .order-message { min-height: 21px; margin: 13px 0 0; color: var(--palm); font-size: 13px; font-weight: 800; text-align: center; }
+
+    @media (max-width: 800px) {
+      .intro-band { grid-template-columns: 1fr; gap: 17px; }
+      .food-photo { max-width: 500px; }
+      .order-layout { grid-template-columns: 1fr; }
+      .order-summary { position: static; }
+    }
+
+    @media (max-width: 520px) {
+      body { background-image: linear-gradient(180deg, #bdece2 0 145px, var(--aqua) 145px); }
+      .site-header, main { width: min(100% - 24px, 1120px); }
+      .site-header { padding: 16px 0; }
+      .header-note { display: none; }
+      .brand-copy strong { font-size: 19px; }
+      main { padding-top: 7px; }
+      .intro-band h1 { font-size: 30px; }
+      .intro-band p { font-size: 14px; }
+      .food-photo { height: 123px; }
+      .order-builder { padding: 20px 15px; }
+      .package { grid-template-columns: 42px minmax(0, 1fr); gap: 10px; }
+      .package-icon { width: 42px; height: 42px; font-size: 21px; }
+      .package .stepper { grid-column: 2; justify-self: start; margin-top: 2px; }
+      .addon-list { grid-template-columns: 1fr; }
+      .summary-top, .summary-content { padding-right: 18px; padding-left: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand" aria-label="椰风清补凉">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div class="brand-copy"><strong>椰风清补凉</strong><span>COCONUT BREEZE</span></div>
+    </div>
+    <div class="header-note">海口现做 · 配送到家</div>
+  </header>
+
+  <main>
+    <section class="intro-band" aria-labelledby="page-title">
+      <div>
+        <h1 id="page-title">今天想来几碗<br>海南的清凉？</h1>
+        <p>挑选套餐、加满喜欢的料，价格立即算好。</p>
+      </div>
+      <figure class="food-photo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Qingbuliang_at_a_restaurant_in_Sanya_%2820230324201224%29.jpg/960px-Qingbuliang_at_a_restaurant_in_Sanya_%2820230324201224%29.jpg" alt="一碗配料丰富的海南清补凉">
+        <figcaption><a href="https://commons.wikimedia.org/wiki/File:Qingbuliang_at_a_restaurant_in_Sanya_(20230324201224).jpg">Photo: N509FZ / CC BY-SA 4.0</a></figcaption>
+      </figure>
+    </section>
+
+    <div class="order-layout">
+      <section class="order-builder" aria-label="定制订单">
+        <div class="section-heading"><h2>选套餐</h2><span>点击 +/- 调整数量</span></div>
+        <div class="package-list">
+          <article class="package" data-name="椰香经典" data-price="12">
+            <div class="package-icon" aria-hidden="true">椰</div>
+            <div><h3>椰香经典</h3><p>椰奶、西米、红豆、绿豆</p><div class="package-price">¥12 / 碗</div></div>
+            <div class="stepper" aria-label="椰香经典数量"><button type="button" data-action="minus" aria-label="减少椰香经典">−</button><output>0</output><button type="button" data-action="plus" aria-label="增加椰香经典">+</button></div>
+          </article>
+          <article class="package" data-name="热带满料" data-price="16">
+            <div class="package-icon" aria-hidden="true">满</div>
+            <div><h3>热带满料</h3><p>椰奶、芋圆、薏米、花生、葡萄干</p><div class="package-price">¥16 / 碗</div></div>
+            <div class="stepper" aria-label="热带满料数量"><button type="button" data-action="minus" aria-label="减少热带满料">−</button><output>0</output><button type="button" data-action="plus" aria-label="增加热带满料">+</button></div>
+          </article>
+          <article class="package" data-name="鲜果椰奶" data-price="20">
+            <div class="package-icon" aria-hidden="true">鲜</div>
+            <div><h3>鲜果椰奶</h3><p>椰奶、芒果、西瓜、哈密瓜、椰肉</p><div class="package-price">¥20 / 碗</div></div>
+            <div class="stepper" aria-label="鲜果椰奶数量"><button type="button" data-action="minus" aria-label="减少鲜果椰奶">−</button><output>0</output><button type="button" data-action="plus" aria-label="增加鲜果椰奶">+</button></div>
+          </article>
+        </div>
+
+        <section class="customize" aria-label="加料定制">
+          <h2>再加点料</h2>
+          <p>加料默认放进订单，口味可在备注中告诉我们。</p>
+          <div class="addon-list">
+            <div class="addon" data-name="加椰肉" data-price="3"><span>加椰肉 <b>+¥3</b></span><div class="stepper" aria-label="加椰肉数量"><button type="button" data-action="minus" aria-label="减少椰肉">−</button><output>0</output><button type="button" data-action="plus" aria-label="增加椰肉">+</button></div></div>
+            <div class="addon" data-name="加芋圆" data-price="3"><span>加芋圆 <b>+¥3</b></span><div class="stepper" aria-label="加芋圆数量"><button type="button" data-action="minus" aria-label="减少芋圆">−</button><output>0</output><button type="button" data-action="plus" aria-label="增加芋圆">+</button></div></div>
+            <div class="addon" data-name="加鲜果" data-price="4"><span>加鲜果 <b>+¥4</b></span><div class="stepper" aria-label="加鲜果数量"><button type="button" data-action="minus" aria-label="减少鲜果">−</button><output>0</output><button type="button" data-action="plus" aria-label="增加鲜果">+</button></div></div>
+            <div class="addon" data-name="加冰淇淋" data-price="5"><span>加冰淇淋 <b>+¥5</b></span><div class="stepper" aria-label="加冰淇淋数量"><button type="button" data-action="minus" aria-label="减少冰淇淋">−</button><output>0</output><button type="button" data-action="plus" aria-label="增加冰淇淋">+</button></div></div>
+          </div>
+        </section>
+
+        <section class="flavor" aria-label="口味偏好">
+          <h2>甜度偏好</h2>
+          <div class="segmented">
+            <label><input type="radio" name="sweetness" value="少糖" checked><span>少糖</span></label>
+            <label><input type="radio" name="sweetness" value="正常糖"><span>正常糖</span></label>
+            <label><input type="radio" name="sweetness" value="多糖"><span>多糖</span></label>
+          </div>
+        </section>
+      </section>
+
+      <aside class="order-summary" aria-live="polite" aria-label="订单摘要">
+        <div class="summary-top"><p>YOUR ORDER</p><h2>订单摘要</h2></div>
+        <div class="summary-content">
+          <div class="summary-items" id="summary-items"><p class="empty-state">还没有选套餐</p></div>
+          <div class="bill">
+            <div class="bill-row"><span>商品小计</span><strong id="subtotal">¥0</strong></div>
+            <div class="bill-row"><span>配送费</span><strong id="delivery">¥0</strong></div>
+            <div class="bill-row total"><span>合计</span><output id="total">¥0</output></div>
+          </div>
+          <button class="place-order" id="place-order" type="button" disabled>请选择套餐</button>
+          <button class="clear-order" id="clear-order" type="button">清空本单</button>
+          <p class="order-message" id="order-message" role="status"></p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const entries = [...document.querySelectorAll('[data-price]')].map((element) => ({
+        element,
+        name: element.dataset.name,
+        price: Number(element.dataset.price),
+        quantity: 0,
+        output: element.querySelector('output')
+      }));
+      const summaryItems = document.querySelector('#summary-items');
+      const subtotalOutput = document.querySelector('#subtotal');
+      const deliveryOutput = document.querySelector('#delivery');
+      const totalOutput = document.querySelector('#total');
+      const orderButton = document.querySelector('#place-order');
+      const clearButton = document.querySelector('#clear-order');
+      const message = document.querySelector('#order-message');
+
+      const money = (amount) => `¥${amount}`;
+      const selectedSweetness = () => document.querySelector('input[name="sweetness"]:checked').value;
+
+      function render() {
+        const activeEntries = entries.filter((entry) => entry.quantity > 0);
+        const packageCount = entries.filter((entry) => entry.element.classList.contains('package')).reduce((sum, entry) => sum + entry.quantity, 0);
+        const subtotal = activeEntries.reduce((sum, entry) => sum + entry.price * entry.quantity, 0);
+        const delivery = packageCount === 0 ? 0 : subtotal >= 30 ? 0 : 5;
+        const total = subtotal + delivery;
+
+        entries.forEach((entry) => { entry.output.textContent = entry.quantity; });
+        entries.filter((entry) => entry.element.classList.contains('addon')).forEach((entry) => {
+          entry.element.classList.toggle('is-disabled', packageCount === 0);
+          entry.element.querySelectorAll('button').forEach((button) => { button.disabled = packageCount === 0; });
+        });
+        summaryItems.replaceChildren();
+        if (activeEntries.length === 0) {
+          const empty = document.createElement('p');
+          empty.className = 'empty-state';
+          empty.textContent = '还没有选套餐';
+          summaryItems.append(empty);
+        } else {
+          activeEntries.forEach((entry) => {
+            const line = document.createElement('div');
+            line.className = 'summary-item';
+            line.innerHTML = `<span>${entry.name} × ${entry.quantity}</span><span>${money(entry.price * entry.quantity)}</span>`;
+            summaryItems.append(line);
+          });
+          const preference = document.createElement('div');
+          preference.className = 'summary-item';
+          preference.innerHTML = `<span>甜度：${selectedSweetness()}</span><span>已备注</span>`;
+          summaryItems.append(preference);
+        }
+
+        subtotalOutput.textContent = money(subtotal);
+        deliveryOutput.textContent = packageCount === 0 ? money(0) : delivery === 0 ? '免配送费' : money(delivery);
+        totalOutput.textContent = money(total);
+        orderButton.disabled = packageCount === 0;
+        orderButton.textContent = packageCount === 0 ? '请选择套餐' : `去结算 ${money(total)}`;
+      }
+
+      document.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-action]');
+        if (!button) return;
+        const entry = entries.find((item) => item.element.contains(button));
+        if (!entry) return;
+        entry.quantity = Math.max(0, entry.quantity + (button.dataset.action === 'plus' ? 1 : -1));
+        message.textContent = '';
+        render();
+      });
+
+      document.querySelectorAll('input[name="sweetness"]').forEach((input) => input.addEventListener('change', () => {
+        message.textContent = '';
+        render();
+      }));
+
+      clearButton.addEventListener('click', () => {
+        entries.forEach((entry) => { entry.quantity = 0; });
+        document.querySelector('input[name="sweetness"][value="少糖"]').checked = true;
+        message.textContent = '已清空本单。';
+        render();
+      });
+
+      orderButton.addEventListener('click', () => {
+        const bowls = entries.filter((entry) => entry.element.classList.contains('package')).reduce((sum, entry) => sum + entry.quantity, 0);
+        message.textContent = `已为您准备 ${bowls} 碗${selectedSweetness()}清补凉，等待配送。`;
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

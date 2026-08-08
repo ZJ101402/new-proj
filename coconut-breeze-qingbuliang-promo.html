@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#087f95">
+  <title>椰风清补凉 | 海口夏日清凉</title>
+  <style>
+    :root {
+      --blue: #087f95;
+      --blue-deep: #055a6c;
+      --green: #17745c;
+      --mint: #c9f3e5;
+      --yellow: #ffd34e;
+      --coral: #ef7659;
+      --cream: #fffdf2;
+      --ink: #104b55;
+      --sand: #f5ebc5;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--cream); color: var(--ink); font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+
+    .hero {
+      position: relative;
+      min-height: 91vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      color: white;
+      background: var(--blue) url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Qingbuliang_at_a_restaurant_in_Sanya_%2820230324201224%29.jpg/1280px-Qingbuliang_at_a_restaurant_in_Sanya_%2820230324201224%29.jpg") center 53% / cover no-repeat;
+    }
+
+    .hero::before { position: absolute; inset: 0; background: rgba(0, 67, 77, .54); content: ""; }
+    .hero > * { position: relative; z-index: 1; }
+
+    nav {
+      width: min(1180px, calc(100% - 44px));
+      margin: 0 auto;
+      padding: 25px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 11px; font-size: 19px; font-weight: 900; letter-spacing: .08em; }
+    .brand-mark { width: 32px; height: 32px; display: grid; place-items: center; border: 2px solid var(--yellow); border-radius: 50%; color: var(--yellow); font-size: 18px; }
+    .nav-link { padding: 9px 14px; border: 1px solid rgba(255,255,255,.75); border-radius: 5px; font-size: 14px; font-weight: 800; }
+
+    .hero-copy {
+      width: min(1180px, calc(100% - 44px));
+      flex: 1;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 70px 0 95px;
+    }
+
+    .kicker { margin: 0 0 15px; color: var(--yellow); font-size: 14px; font-weight: 900; letter-spacing: .16em; }
+    h1 { max-width: 720px; margin: 0; font-size: clamp(48px, 8vw, 92px); line-height: 1.02; letter-spacing: .04em; text-shadow: 0 3px 16px rgba(0, 34, 42, .42); }
+    .hero-copy > p:last-of-type { max-width: 505px; margin: 23px 0 29px; font-size: 18px; font-weight: 700; line-height: 1.75; text-shadow: 0 2px 8px rgba(0, 34, 42, .55); }
+    .cta { align-self: flex-start; padding: 14px 21px; border-radius: 5px; background: var(--yellow); color: #5c531e; font-size: 16px; font-weight: 900; box-shadow: 0 5px 0 rgba(56, 48, 7, .33); }
+    .hero-credit { position: absolute; right: 22px; bottom: 17px; margin: 0; color: rgba(255,255,255,.9); font-size: 10px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,.7); }
+    .hero-credit a { text-decoration: underline; text-underline-offset: 2px; }
+
+    .wave-separator { height: 31px; margin-top: -30px; position: relative; z-index: 2; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: var(--cream); }
+    .section { width: min(1120px, calc(100% - 44px)); margin: 0 auto; padding: 60px 0; }
+    .section-label { margin: 0 0 10px; color: var(--coral); font-size: 13px; font-weight: 900; letter-spacing: .14em; }
+    h2 { margin: 0; color: var(--blue-deep); font-size: clamp(29px, 4vw, 43px); line-height: 1.2; letter-spacing: .04em; }
+
+    .story { display: grid; grid-template-columns: .78fr 1.22fr; gap: 72px; align-items: center; }
+    .story-side { min-height: 265px; display: flex; align-items: center; padding: 32px; background: var(--yellow); color: #4e572b; }
+    .story-side p { margin: 0; font-size: 21px; font-weight: 900; line-height: 1.55; }
+    .story-copy > p:not(.section-label) { margin: 18px 0 0; color: #4c7376; font-size: 16px; font-weight: 650; line-height: 1.85; }
+    .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 30px; background: #abdacd; }
+    .fact { padding: 15px; background: #effcf6; }
+    .fact strong { display: block; color: var(--green); font-size: 21px; }
+    .fact span { display: block; margin-top: 5px; color: #5b8383; font-size: 12px; font-weight: 800; }
+
+    .menu-section { background: #e4f9ed; }
+    .menu-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 28px; }
+    .menu-heading > p { max-width: 330px; margin: 0; color: #4d7975; font-size: 14px; font-weight: 700; line-height: 1.65; }
+    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+    .menu-item { overflow: hidden; border: 1px solid #b0ded1; border-radius: 7px; background: var(--cream); }
+    .menu-color { height: 12px; background: var(--blue); }
+    .menu-item:nth-child(2) .menu-color { background: var(--yellow); }
+    .menu-item:nth-child(3) .menu-color { background: var(--coral); }
+    .menu-body { padding: 23px; }
+    .menu-item h3 { margin: 0; color: var(--blue-deep); font-size: 22px; }
+    .menu-item p { min-height: 50px; margin: 10px 0 19px; color: #628487; font-size: 14px; font-weight: 650; line-height: 1.7; }
+    .price { color: var(--coral); font-size: 27px; font-weight: 900; }
+    .price small { margin-left: 4px; color: #759393; font-size: 13px; }
+
+    .visit { padding: 0; background: var(--blue); color: white; }
+    .visit-inner { width: min(1120px, calc(100% - 44px)); margin: 0 auto; padding: 57px 0; display: grid; grid-template-columns: 1.05fr .95fr; gap: 70px; }
+    .visit h2 { color: white; }
+    .visit .section-label { color: var(--yellow); }
+    .visit-copy { margin: 19px 0 0; color: #d6fff2; font-size: 16px; font-weight: 650; line-height: 1.8; }
+    .details { display: grid; gap: 0; border-top: 1px solid rgba(255,255,255,.35); }
+    .detail { display: grid; grid-template-columns: 102px 1fr; gap: 12px; padding: 17px 0; border-bottom: 1px solid rgba(255,255,255,.35); }
+    .detail dt { color: var(--yellow); font-size: 13px; font-weight: 900; letter-spacing: .08em; }
+    .detail dd { margin: 0; color: white; font-size: 15px; font-weight: 700; line-height: 1.55; }
+    footer { padding: 17px 22px; background: var(--blue-deep); color: #bfeee3; font-size: 12px; font-weight: 700; text-align: center; }
+
+    @media (max-width: 760px) {
+      .hero { min-height: 86vh; background-position: 60% center; }
+      nav, .hero-copy, .section, .visit-inner { width: min(100% - 28px, 1120px); }
+      nav { padding: 17px 0; }
+      .hero-copy { padding: 60px 0 76px; }
+      .hero-copy > p:last-of-type { font-size: 16px; }
+      .story, .visit-inner { grid-template-columns: 1fr; gap: 30px; }
+      .story-side { min-height: 155px; }
+      .facts, .menu-grid { grid-template-columns: 1fr; }
+      .menu-heading { display: block; }
+      .menu-heading > p { margin-top: 15px; }
+      .section { padding: 45px 0; }
+      .visit-inner { padding: 45px 0; }
+      .detail { grid-template-columns: 86px 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <nav aria-label="主导航">
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">椰</span>椰风清补凉</a>
+      <a class="nav-link" href="#visit">到店指南</a>
+    </nav>
+    <div class="hero-copy" id="top">
+      <p class="kicker">HAIKOU SUMMER COOLER</p>
+      <h1>椰风清补凉</h1>
+      <p>一碗椰奶香，盛满海岛的清甜。现熬椰奶、当天鲜果、满满手作配料，给炎热海口一口刚好的清凉。</p>
+      <a class="cta" href="#menu">看看今天吃什么</a>
+    </div>
+    <p class="hero-credit"><a href="https://commons.wikimedia.org/wiki/File:Qingbuliang_at_a_restaurant_in_Sanya_(20230324201224).jpg">Photo: N509FZ / CC BY-SA 4.0</a></p>
+  </header>
+
+  <div class="wave-separator" aria-hidden="true"></div>
+
+  <main>
+    <section class="section story" aria-labelledby="story-title">
+      <aside class="story-side"><p>椰青香、果肉甜、冰爽刚刚好。<br>这是属于海南夏天的味道。</p></aside>
+      <div class="story-copy">
+        <p class="section-label">OUR WAY</p>
+        <h2 id="story-title">从一碗真材实料开始</h2>
+        <p>我们把海南人熟悉的清补凉，做得更清爽也更有料。椰奶每天现熬，西米、绿豆与芋圆慢慢煮透，再铺上当季鲜果，每一口都有不同的清甜。</p>
+        <div class="facts">
+          <div class="fact"><strong>当天鲜果</strong><span>每日新鲜切配</span></div>
+          <div class="fact"><strong>现熬椰奶</strong><span>香浓不腻口</span></div>
+          <div class="fact"><strong>满满配料</strong><span>一碗吃得过瘾</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="menu-section" id="menu" aria-labelledby="menu-title">
+      <div class="section">
+        <div class="menu-heading">
+          <div><p class="section-label">SIGNATURE BOWLS</p><h2 id="menu-title">招牌清补凉</h2></div>
+          <p>门店现做，冷藏后风味更佳。配料可按当天供应情况微调。</p>
+        </div>
+        <div class="menu-grid">
+          <article class="menu-item"><div class="menu-color"></div><div class="menu-body"><h3>椰香经典</h3><p>椰奶、西米、红豆、绿豆、花生与葡萄干，清甜耐吃。</p><div class="price">¥12<small>/ 碗</small></div></div></article>
+          <article class="menu-item"><div class="menu-color"></div><div class="menu-body"><h3>热带满料</h3><p>椰奶、芋圆、薏米、椰肉、花生与多种豆料，份量十足。</p><div class="price">¥16<small>/ 碗</small></div></div></article>
+          <article class="menu-item"><div class="menu-color"></div><div class="menu-body"><h3>鲜果椰奶</h3><p>椰奶搭配芒果、西瓜、哈密瓜与椰肉，果香更明亮。</p><div class="price">¥20<small>/ 碗</small></div></div></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="visit" id="visit" aria-labelledby="visit-title">
+    <div class="visit-inner">
+      <div>
+        <p class="section-label">COME BY</p>
+        <h2 id="visit-title">把清凉带回家<br>也欢迎来店里坐坐</h2>
+        <p class="visit-copy">下午来一碗，傍晚带一份。门店提供到店自取，也可联系店内安排附近配送。</p>
+      </div>
+      <dl class="details">
+        <div class="detail"><dt>门店地址</dt><dd>海口市龙华区椰风路 18 号<br>椰海夜市东侧 30 米</dd></div>
+        <div class="detail"><dt>营业时间</dt><dd>周一至周日 11:00 - 23:30</dd></div>
+        <div class="detail"><dt>联系电话</dt><dd>0898 - 6688 2026</dd></div>
+      </dl>
+    </div>
+  </section>
+  <footer>椰风清补凉 · 清爽一夏 · 地址与电话为页面展示示例</footer>
+</body>
+</html>
