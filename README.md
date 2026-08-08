@@ -1,7 +1,11 @@
 # new-proj
 
-## 网页预览
+## GitHub Pages 主页
 
-- [清凉卡片页面](https://zj101402.github.io/new-proj/ada-qingbuliang-card.html)
-- [清凉订单页面](https://zj101402.github.io/new-proj/coconut-breeze-qingbuliang-order.html)
-- [清凉促销页面](https://zj101402.github.io/new-proj/coconut-breeze-qingbuliang-promo.html)
+- [打开作品集主页](https://zj101402.github.io/new-proj/)
+
+## 单独网页预览
+
+- [阿达清补凉卡片页面](https://zj101402.github.io/new-proj/ada-qingbuliang-card.html)
+- [椰风清补凉在线点餐页面](https://zj101402.github.io/new-proj/coconut-breeze-qingbuliang-order.html)
+- [椰风清补凉促销页面](https://zj101402.github.io/new-proj/coconut-breeze-qingbuliang-promo.html)
